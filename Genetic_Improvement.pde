@@ -9,7 +9,7 @@ Floor floors[] = new Floor[5];
 
 void setup() {
   size(1000, 700);
-  ninjas = new Population(50);
+  ninjas = new Population(500, false);
   startup();
   bground=loadImage("bground.jpg");
   bground.resize(width, height);
@@ -69,14 +69,14 @@ void checkCollisions(){
 
 
 void startup(){
-  spikes[0] = new Spike(width*0.35, height - 30, 30);
-  spikes[1] = new Spike(width*0.73, height - 30, 30);
-  spikes[2] = new Spike(width*0.25, height - 30, 30);
-  spikes[3] = new Spike(width*0.25, height*0.8 - 10, 30);
-  spikes[4] = new Spike(width*0.20, height*0.8 - 10, 30);
-  spikes[5] = new Spike(width*0.40, height*0.6 - 10, 30);
-  spikes[6] = new Spike(width*0.60, height*0.6 - 10, 30);
-  spikes[7] = new Spike(width*0.50, height*0.8 - 10, 30);
+  spikes[7] = new Spike(width*0.35, height - 30, 30);
+  spikes[6] = new Spike(width*0.73, height - 30, 30);
+  spikes[5] = new Spike(width*0.25, height - 30, 30);
+  spikes[0] = new Spike(width*0.25, height*0.8 - 10, 30);
+  spikes[1] = new Spike(width*0.20, height*0.8 - 10, 30);
+  spikes[2] = new Spike(width*0.40, height*0.6 - 10, 30);
+  spikes[3] = new Spike(width*0.60, height*0.6 - 10, 30);
+  spikes[4] = new Spike(width*0.50, height*0.8 - 10, 30);
   
   fireballs[0] = new Fireball(width-30, 390, -7, 0);
   fireballs[1] = new Fireball(30, 250, 7, 0);

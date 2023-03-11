@@ -7,7 +7,8 @@ class Population{
    float sumFitness;
    int gen;
    boolean found;
-  Population(int size){
+   boolean seen;
+  Population(int size, boolean show){
     popsize = size;
     players = new ArrayList<Player>();
     bestPlayer = 0;
@@ -15,8 +16,10 @@ class Population{
     bestFitness = 0;
     sumFitness = 0;
     gen = 1;
+    seen = show;
     found = false;
-    for(int i = 0; i < size; i++) players.add(new Player(false, false)); 
+    for(int i = 0; i < size; i++) players.add(new Player(false, seen)); 
+    players.get(0).show = true;
   }
 
   void calculateFitnesses(){
@@ -27,10 +30,14 @@ class Population{
     ArrayList<Player> new_generation = new ArrayList<Player>();
     setBestPlayer();
     fitnessSum();
-    new_generation.add(players.get(bestPlayer).make_child());
+    new_generation.add(players.get(bestPlayer).make_child(seen));
+    new_generation.add(players.get(bestPlayer).make_child(seen));
+    new_generation.add(players.get(bestPlayer).make_child(seen));
+    new_generation.add(players.get(bestPlayer).make_child(seen));
+    new_generation.add(players.get(bestPlayer).make_child(seen));
     for(int i = 1; i < popsize; i++){
       Player parent = selectParent();
-      new_generation.add(parent.make_child());
+      new_generation.add(parent.make_child(seen));
     }
     gen+=1;
     players = new_generation;
@@ -47,9 +54,8 @@ class Population{
   }
   
   void mutateChildren(){
-    for(int i = 1; i < players.size(); i++){
-      if(players.get(i).died) players.get(i).brain.mutate(players.get(i).curstep);
-      else players.get(i).brain.mutate(-1);
+    for(int i = 3; i < players.size(); i++){
+      players.get(i).brain.mutate(players.get(i).died, players.get(i).curstep);
       players.get(i).died = false;
       players.get(i).finished = false;
     }
@@ -72,7 +78,7 @@ class Population{
     
     if (max > bestFitness){
       bestFitness = max;
-      Player topG = players.get(bestPlayer).make_child();
+      Player topG = players.get(bestPlayer).make_child(seen);
       topG.show = true;
       topG.best = true;
       players.add(topG);
@@ -87,7 +93,6 @@ class Population{
   
   void update(){
     for(Player p: players){
-     // if(p.brain.step > minStep) p.died = true;
        p.decide();
     }
   }
@@ -99,7 +104,7 @@ class Population{
   
   void increaseMoves(){
     if(players.get(0).brain.steps.size() < 10000 && !found){
-      for(Player p : players) p.brain.addMoves(10);
+      for(Player p : players) p.brain.addMoves(20);
     }
   }
   

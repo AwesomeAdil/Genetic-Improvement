@@ -1,5 +1,5 @@
 class Brain{
-  static final float mutation_rate = 0.3;
+  static final float mutation_rate = 0.1;
   int numsteps;
   ArrayList<Integer> steps;
   int step = 0;
@@ -23,18 +23,27 @@ class Brain{
     return clone;
   }
   
-  void mutate(int deathStep){
-    float delta = 1.5;
-    if(deathStep > 0) delta = 1;
+  void mutate(boolean died, int deathStep){
+    float delta = 1;
+    if(!died) delta = 1.5;
     for(int i=0; i < numsteps; i++){
        float mutation_chance = random(delta);
 
        // increases chance of mutation significantly if died here
-       if(deathStep > 0 && i > deathStep - 10) mutation_chance = random(delta * 0.2);
+       if(died && i > deathStep - 5) mutation_chance = random(delta * 0.2);
        
        //mutate
        if(mutation_chance < mutation_rate) steps.set(i, getRandDir());
     }
+  }
+  
+  Brain breed(Brain other, int alter){
+    Brain offspring = new Brain(numsteps);
+    for(int i=0; i < numsteps; i++){
+      if(i % 2 == alter) offspring.steps.add(steps.get(i));
+      else  offspring.steps.add(other.steps.get(i));
+    }
+    return offspring;
   }
   
   void addMoves(int addition){

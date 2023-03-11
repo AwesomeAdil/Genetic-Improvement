@@ -21,8 +21,8 @@ class Player{
     standing = false;
     win = false;
     human = isPlaying;
-    brain = new Brain(200);
-    brain.randomize(200);
+    brain = new Brain(20);
+    brain.randomize(20);
     died = false;
     finished = false;
     show = showBest;
@@ -36,6 +36,7 @@ class Player{
       vy = 0;
       standing = false;
     }else if(!finished){
+      
       died = true;
     }
   }
@@ -60,7 +61,10 @@ class Player{
       y+=vy;
       maxX = max(x, maxX);
       sprite.resize(80,80);
+      if(!best) fill(255, 0,0);
+      else fill(0,255,0);
       if(show) image(sprite, x-40, y-40);
+      else rect(x-40, y-40, 40, 80);
       if(dist(x-7,y+5,width-60,30)<=90) win=true;
       grav();
       if (x < 0 || x > width || y < 0 || y > height) reset(true);
@@ -124,8 +128,8 @@ class Player{
     vx = 0;
   }
   
-  Player make_child(){
-    Player child = new Player(false, false);
+  Player make_child(boolean show){
+    Player child = new Player(false, show);
     child.brain = brain.clone();
     child.died = died;
     return child;
@@ -134,8 +138,9 @@ class Player{
   
   // NEED TO STOP PROCRASTINATING ON THIS .... soon
   void calculateFitness() {
-    fitness = width/ (width - maxX);
-    if(died) fitness *= 0.8;
+    fitness = maxX;
+    if(died) fitness *= 0.9;
+    fitness *= fitness * fitness;
   }
   
   
